@@ -30,10 +30,6 @@ sbt runAll
 Then you should have access to all endpoints of this microservice
 http://localhost:9000/api/*
 
-## Architecture
-
-
-
 ## Tests
 
 
@@ -44,6 +40,12 @@ To run specific test use
 ```
 testOnly component_nameSpec
 ```
+
+
+the requirements state, that you need to summarise the availability over a period of time
+
+calculate duration of availability between from/to date_time; particularly including recurring entries, and exceptions in those entries
+
 
 
 # Endpoints

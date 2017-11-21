@@ -31,6 +31,7 @@ import com.datatroniq.calendar.utils.Formats._
 import com.datatroniq.calendar.utils.AvailabilitySplitter
 import org.joda.time._
 import org.joda.time.format._
+import org.joda.time.Minutes
 
 trait AvaliabilitiesCalls extends MicroserviceCalService {
   val persistentEntityRegistry: PersistentEntityRegistry
@@ -49,7 +50,8 @@ trait AvaliabilitiesCalls extends MicroserviceCalService {
         val availabilities = AvailabilitySplitter.split(entries, entry_exceptions)
         AssetAvailabilityWrapper(
           assetId,
-          availabilities
+          availabilities,
+          availabilities.map(a => Minutes.minutesBetween(a.from,a.end).getMinutes()).foldLeft(0)(_ + _)
         )
         }
       }
@@ -73,7 +75,8 @@ ref.ask(AssetEntries(assetId)).flatMap { _ =>
         val availabilities = AvailabilitySplitter.split(entries, entry_exceptions)
           AssetAvailabilityWrapper(
             assetId,
-            availabilities
+            availabilities,
+            availabilities.map(a => Minutes.minutesBetween(a.from,a.end).getMinutes()).foldLeft(0)(_ + _)           
           )
         }
       }
