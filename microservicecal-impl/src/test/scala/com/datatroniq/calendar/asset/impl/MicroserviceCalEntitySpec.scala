@@ -1,4 +1,4 @@
-package com.datatroniq.calendar.asset.impl
+/*package com.datatroniq.calendar.asset.impl
 
 import akka.actor.ActorSystem
 import akka.testkit.TestKit
@@ -46,3 +46,4 @@ class MicroserviceCalEntitySpec
 
   }
 }
+*/
