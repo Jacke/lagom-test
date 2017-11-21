@@ -63,8 +63,8 @@ class MicroserviceCalEntity extends PersistentEntity {
             ctx.thenPersist(
               AssetEntryCreated(EntryFactory(entry))
             ) { _ =>
-              println(EntryFactory    (entry) )
-              ctx.reply( EntryFactory (entry) )
+              println(EntryFactory(entry))
+              ctx.reply(EntryFactory(entry))
             }
         }
         .onCommand[AssetEntryUpdate, Entry] {
@@ -160,12 +160,14 @@ class MicroserviceCalEntity extends PersistentEntity {
                                  state.entry_exceptions,
                                  LocalDateTime.now().toString)
           case (AssetEntryUpdated(entryUpdated), state) =>
-            MicroserviceCalState(state.message,
-                                 state.assets,
-                                 (EntryFactory(entryUpdated) :: state.entries.filter(a =>
-                                   a.id != entryUpdated.id)),
-                                 state.entry_exceptions,
-                                 LocalDateTime.now().toString)
+            MicroserviceCalState(
+              state.message,
+              state.assets,
+              (EntryFactory(entryUpdated) :: state.entries.filter(a =>
+                a.id != entryUpdated.id)),
+              state.entry_exceptions,
+              LocalDateTime.now().toString
+            )
           case (AssetEntryDeleted(entryRemovedId), state) =>
             MicroserviceCalState(
               state.message,

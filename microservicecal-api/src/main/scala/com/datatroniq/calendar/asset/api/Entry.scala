@@ -9,19 +9,19 @@ import org.joda.time.Minutes
 
 object EntryFactory {
   def apply(id: Option[Int] = None,
-                 asset_id: Int,
-                 name: String,
-                 startDateUtc: DateTime,
-                 endDateUtc: DateTime,
-                 duration: Int = 0,
-                 isAllDay: Boolean = false,
-                 isRecuring: Boolean = false,
-                 recurrencePattern: String = ""):Entry = {
-/* 
-      TODO: Check if reccurencePattern validated by the same entry day 
+            asset_id: Int,
+            name: String,
+            startDateUtc: DateTime,
+            endDateUtc: DateTime,
+            duration: Int = 0,
+            isAllDay: Boolean = false,
+            isRecuring: Boolean = false,
+            recurrencePattern: String = ""): Entry = {
+    /*
+      TODO: Check if reccurencePattern validated by the same entry day
         Entry on monday, reccurence pattern from monday
         Entry on wed then pattern should be from wed
-        
+
         if (isRecuring) {
           // Validate recurrencePattern pattern
           val pattern = recurrencePattern.split("-")
@@ -31,8 +31,9 @@ object EntryFactory {
           if (!(start == )) {
           }
         }
-*/
-    val newDuration = Minutes.minutesBetween(startDateUtc, endDateUtc).getMinutes()
+     */
+    val newDuration =
+      Minutes.minutesBetween(startDateUtc, endDateUtc).getMinutes()
     new Entry(id,
               asset_id,
               name,
@@ -44,8 +45,9 @@ object EntryFactory {
               recurrencePattern)
   }
 
-  def apply(entry: Entry):Entry = {
-    val newDuration = Minutes.minutesBetween(entry.startDateUtc, entry.endDateUtc).getMinutes()
+  def apply(entry: Entry): Entry = {
+    val newDuration =
+      Minutes.minutesBetween(entry.startDateUtc, entry.endDateUtc).getMinutes()
     new Entry(entry.id,
               entry.asset_id,
               entry.name,
@@ -76,15 +78,17 @@ case class Entry(id: Option[Int] = None,
       val start = pattern(0)
       val end = pattern(1)
       val days = List("MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN")
-      val skippedDays = days.drop(days.indexOf(end)+1)
+      val skippedDays = days.drop(days.indexOf(end) + 1)
 
-      val targetDays = days.drop(days.indexOf(currentDay))filter(d => !skippedDays.contains(d) )
+      val targetDays = days.drop(days.indexOf(currentDay)) filter (d =>
+        !skippedDays.contains(d))
       targetDays.map { day =>
-        EntryFactory(Entry(id,
-              asset_id,
-              name,
-              startDateUtc.plusDays(days.indexOf(day)),
-              endDateUtc.plusDays(days.indexOf(day))) )
+        EntryFactory(
+          Entry(id,
+                asset_id,
+                name,
+                startDateUtc.plusDays(days.indexOf(day)),
+                endDateUtc.plusDays(days.indexOf(day))))
       }
     } else { List(EntryFactory(this)) }
   }

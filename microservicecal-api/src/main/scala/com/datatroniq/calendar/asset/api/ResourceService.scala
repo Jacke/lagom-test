@@ -47,7 +47,10 @@ trait MicroserviceCalService extends Service {
   def assetAvailability(
       assetId: Int): ServiceCall[NotUsed, AssetAvailabilityWrapper]
 
-  def assetAvailabilityFromTo(assetId: Int, from: String, to: String): ServiceCall[NotUsed, AssetAvailabilityWrapper]
+  def assetAvailabilityFromTo(
+      assetId: Int,
+      from: String,
+      to: String): ServiceCall[NotUsed, AssetAvailabilityWrapper]
 
   override final def descriptor = {
     import Service._

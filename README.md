@@ -43,8 +43,14 @@ testOnly component_nameSpec
 
 
 the requirements state, that you need to summarise the availability over a period of time
+by the endpoint(tests are not implemented yet, will remove this on 11 am gmt+2):
 
-calculate duration of availability between from/to date_time; particularly including recurring entries, and exceptions in those entries
+```
+
+GET /api/asset/:assetId/availabilities_from/:from/:to
+ 
+Return list of availabilities from to datetime(format: 11/18/2017 08:10:00)
+```
 
 
 

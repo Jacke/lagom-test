@@ -41,7 +41,6 @@ object AvailabilitySplitter {
               recurrencePattern = "MON-WED"))
     )
 
-
     val test3 = recurenceParsing(
       List(
         Entry(None,
@@ -68,7 +67,8 @@ object AvailabilitySplitter {
       val interval =
         new org.joda.time.Interval(entry.startDateUtc, entry.endDateUtc)
       val currentExceptions = exceptions.filter { target =>
-        println(s"currentExceptions ${target.startDateUtc} ${target.endDateUtc}")
+        println(
+          s"currentExceptions ${target.startDateUtc} ${target.endDateUtc}")
         interval.contains(new Interval(target.startDateUtc, target.endDateUtc))
       }
 
@@ -80,37 +80,36 @@ object AvailabilitySplitter {
           end: DateTime,
           otherExceptions: List[EntryException] = List(),
           avaliabities: List[Availability] = List()): List[Availability] = {
-          println("otherExceptions.length")
-          println(otherExceptions.length)
-          if (otherExceptions.length != 0) {
-            val targetException = otherExceptions.head
-            val newAvaliability =
-              Availability(start, targetException.startDateUtc)
-            println(
-              s"New avaliability ${start}: ${targetException.startDateUtc}")
-            generateAvailability(workdayEnd,
-                                 currentExceptions,
-                                 targetException.endDateUtc,
-                                 otherExceptions.head.startDateUtc,
-                                 otherExceptions.tail,
-                                 (newAvaliability :: avaliabities))
-          } else {
-            (avaliabities :+ Availability(currentExceptions.last.endDateUtc,
-                                          workdayEnd))
-          }
+        println("otherExceptions.length")
+        println(otherExceptions.length)
+        if (otherExceptions.length != 0) {
+          val targetException = otherExceptions.head
+          val newAvaliability =
+            Availability(start, targetException.startDateUtc)
+          println(s"New avaliability ${start}: ${targetException.startDateUtc}")
+          generateAvailability(workdayEnd,
+                               currentExceptions,
+                               targetException.endDateUtc,
+                               otherExceptions.head.startDateUtc,
+                               otherExceptions.tail,
+                               (newAvaliability :: avaliabities))
+        } else {
+          (avaliabities :+ Availability(currentExceptions.last.endDateUtc,
+                                        workdayEnd))
+        }
       }
       if (currentExceptions.length > 0) {
-          generateAvailability(entry.endDateUtc,
-                                   currentExceptions,
-                                   entry.startDateUtc,
-                                   entry.endDateUtc,
-                                   currentExceptions)
+        generateAvailability(entry.endDateUtc,
+                             currentExceptions,
+                             entry.startDateUtc,
+                             entry.endDateUtc,
+                             currentExceptions)
       } else {
-          List(Availability(entry.startDateUtc, entry.endDateUtc))
+        List(Availability(entry.startDateUtc, entry.endDateUtc))
       }
     }.flatten
   }
-  
+
   def test() = {
     val pattern = DateTimeFormat.forPattern("MM/dd/yyyy HH:mm:ss")
     split(

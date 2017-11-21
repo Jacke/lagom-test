@@ -87,7 +87,7 @@ trait Tables {
         DBIO.successful(())
       }
     }.transactionally
-    
+
 }
 
 object MicroserviceCalEntityRepository {
@@ -120,13 +120,6 @@ class MicroserviceCalEntityRepository(db: Database, val profile: JdbcProfile)(
     extends Tables {
   import profile.api._
 
-
-
-
-
-
-
-
   def assetCreate(a: Asset): DBIO[Asset] =
     (assets returning assets) += Asset(a.id, a.name)
 
@@ -150,14 +143,13 @@ class MicroserviceCalEntityRepository(db: Database, val profile: JdbcProfile)(
   def selectAsset(id: Int): DBIO[Option[Asset]] =
     assets.filter(_.id === id).result.headOption
 
-/*******
+  /*******
  **  Entry exceptions
  **/
   def getEntryException(id: Int): DBIO[Option[EntryException]] =
     entry_exceptions.filter(_.id === id).result.headOption
   def getEntriesException(ids: List[Int]): DBIO[Seq[EntryException]] =
     entry_exceptions.filter(_.id inSetBind ids).result
-
 
   def entryExceptionCreate(e: EntryException): DBIO[EntryException] =
     (entry_exceptions returning entry_exceptions) += e
@@ -184,7 +176,7 @@ class MicroserviceCalEntityRepository(db: Database, val profile: JdbcProfile)(
   def getEntryExceptionsByEntry(entry_id: Int): DBIO[Seq[EntryException]] =
     entry_exceptions.filter(_.entry_id === entry_id).result
 
-/*******
+  /*******
 **  Entries
 ********/
   def getEntry(id: Int): DBIO[Option[Entry]] =

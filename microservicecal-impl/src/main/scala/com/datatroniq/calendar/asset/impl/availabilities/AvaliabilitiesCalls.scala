@@ -45,42 +45,57 @@ trait AvaliabilitiesCalls extends MicroserviceCalService {
       AssetService.TOPIC_NAME)
 
     ref.ask(AssetEntries(assetId)).flatMap { _ =>
-      db.run(repository.selectEntryByAsset(assetId)).map(_.toList).flatMap { entries => 
-      db.run(repository.getEntriesException(entries.map(_.id.get).toList)).map(_.toList).map { entry_exceptions =>
-        val availabilities = AvailabilitySplitter.split(entries, entry_exceptions)
-        AssetAvailabilityWrapper(
-          assetId,
-          availabilities,
-          availabilities.map(a => Minutes.minutesBetween(a.from,a.end).getMinutes()).foldLeft(0)(_ + _)
-        )
-        }
+      db.run(repository.selectEntryByAsset(assetId)).map(_.toList).flatMap {
+        entries =>
+          db.run(repository.getEntriesException(entries.map(_.id.get).toList))
+            .map(_.toList)
+            .map { entry_exceptions =>
+              val availabilities =
+                AvailabilitySplitter.split(entries, entry_exceptions)
+              AssetAvailabilityWrapper(
+                assetId,
+                availabilities,
+                availabilities
+                  .map(a => Minutes.minutesBetween(a.from, a.end).getMinutes())
+                  .foldLeft(0)(_ + _)
+              )
+            }
       }
     }
   }
 
-  override def assetAvailabilityFromTo(assetId: Int, from: String, to: String) = ServiceCall { request =>
-    val ref = persistentEntityRegistry.refFor[MicroserviceCalEntity](
-      AssetService.TOPIC_NAME)
-    val pattern = DateTimeFormat.forPattern("MM/dd/yyyy HH:mm:ss")
-    val fromDateTime = DateTime.parse(from, pattern)
-    val toDateTime = DateTime.parse(to, pattern)
-    val interval = new org.joda.time.Interval(fromDateTime, toDateTime)
+  override def assetAvailabilityFromTo(assetId: Int, from: String, to: String) =
+    ServiceCall { request =>
+      val ref = persistentEntityRegistry.refFor[MicroserviceCalEntity](
+        AssetService.TOPIC_NAME)
+      val pattern = DateTimeFormat.forPattern("MM/dd/yyyy HH:mm:ss")
+      val fromDateTime = DateTime.parse(from, pattern)
+      val toDateTime = DateTime.parse(to, pattern)
+      val interval = new org.joda.time.Interval(fromDateTime, toDateTime)
 
-ref.ask(AssetEntries(assetId)).flatMap { _ =>
-      db.run(repository.selectEntryByAsset(assetId)).map(_.toList).flatMap { allEntries => 
-      val entries = allEntries.filter { entry => 
-        interval.contains(new Interval(entry.startDateUtc, entry.endDateUtc))
-      }
-      db.run(repository.getEntriesException(entries.map(_.id.get).toList)).map(_.toList).map { entry_exceptions =>
-        val availabilities = AvailabilitySplitter.split(entries, entry_exceptions)
-          AssetAvailabilityWrapper(
-            assetId,
-            availabilities,
-            availabilities.map(a => Minutes.minutesBetween(a.from,a.end).getMinutes()).foldLeft(0)(_ + _)           
-          )
+      ref.ask(AssetEntries(assetId)).flatMap { _ =>
+        db.run(repository.selectEntryByAsset(assetId)).map(_.toList).flatMap {
+          allEntries =>
+            val entries = allEntries.filter { entry =>
+              interval.contains(
+                new Interval(entry.startDateUtc, entry.endDateUtc))
+            }
+            db.run(repository.getEntriesException(entries.map(_.id.get).toList))
+              .map(_.toList)
+              .map { entry_exceptions =>
+                val availabilities =
+                  AvailabilitySplitter.split(entries, entry_exceptions)
+                AssetAvailabilityWrapper(
+                  assetId,
+                  availabilities,
+                  availabilities
+                    .map(a =>
+                      Minutes.minutesBetween(a.from, a.end).getMinutes())
+                    .foldLeft(0)(_ + _)
+                )
+              }
         }
       }
-    } 
-  }
+    }
 
 }

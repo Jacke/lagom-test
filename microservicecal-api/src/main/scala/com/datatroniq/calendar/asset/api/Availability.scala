@@ -10,4 +10,4 @@ import org.joda.time.Minutes
 case class Availability(from: DateTime, end: DateTime)
 case class AssetAvailabilityWrapper(assetId: Int,
                                     availability: List[Availability],
-	                                duration: Int = 0)
+                                    duration: Int = 0)
