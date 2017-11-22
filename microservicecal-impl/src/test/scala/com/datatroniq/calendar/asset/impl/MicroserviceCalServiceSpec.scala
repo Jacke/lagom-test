@@ -24,6 +24,7 @@ class HelloServiceSpec extends AsyncWordSpec with Matchers {
         response.id.isDefined should be(true)
       }
     }
+//   restCall(Method.PUT, "/api/asset/:id", updateAsset _),
 
     "query assets" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
       new MicroserviceCalApplication(ctx) with LocalServiceLocator
@@ -35,20 +36,6 @@ class HelloServiceSpec extends AsyncWordSpec with Matchers {
       }
     }
 
-
-    "updateAsset" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
-      new MicroserviceCalApplication(ctx) with LocalServiceLocator
-    } { server =>
-      val client = server.serviceClient.implement[MicroserviceCalService]
-      client.updateAsset.invoke().map { response =>
-        println(response)
-        response.length should be > 0
-      }
-    }
-
-//   restCall(Method.PUT, "/api/asset/:id", updateAsset _),
-
-
     "query entries" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
       new MicroserviceCalApplication(ctx) with LocalServiceLocator
     } { server =>
@@ -59,8 +46,21 @@ class HelloServiceSpec extends AsyncWordSpec with Matchers {
       }
     }
 
-//   restCall(Method.POST, "/api/asset/:id/entry", createAssetEntry _),
-    "updateAssetEntry" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+
+
+
+
+"query createAssetEntry" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+      new MicroserviceCalApplication(ctx) with LocalServiceLocator
+    } { server =>
+      val client = server.serviceClient.implement[MicroserviceCalService]
+      client.createAssetEntry.invoke().map { response =>
+        println(response)
+        response.length should be > 0
+      }
+    }
+
+"query updateAssetEntry" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
       new MicroserviceCalApplication(ctx) with LocalServiceLocator
     } { server =>
       val client = server.serviceClient.implement[MicroserviceCalService]
@@ -69,7 +69,8 @@ class HelloServiceSpec extends AsyncWordSpec with Matchers {
         response.length should be > 0
       }
     }
-    "deleteAssetEntry" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+
+"query deleteAssetEntry" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
       new MicroserviceCalApplication(ctx) with LocalServiceLocator
     } { server =>
       val client = server.serviceClient.implement[MicroserviceCalService]
@@ -80,29 +81,17 @@ class HelloServiceSpec extends AsyncWordSpec with Matchers {
     }
 
 
-    "query entries" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+"query getEntryExceptionsByEntry" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
       new MicroserviceCalApplication(ctx) with LocalServiceLocator
     } { server =>
       val client = server.serviceClient.implement[MicroserviceCalService]
-      client.getEntries.invoke().map { response =>
+      client.getEntryExceptionsByEntry.invoke().map { response =>
         println(response)
         response.length should be > 0
       }
     }
-//   restCall(Method.GET, "/api/entry/:entry_id/exceptions", getEntryExceptionsByEntry _),
 
-    "query entries" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
-      new MicroserviceCalApplication(ctx) with LocalServiceLocator
-    } { server =>
-      val client = server.serviceClient.implement[MicroserviceCalService]
-      client.getEntries.invoke().map { response =>
-        println(response)
-        response.length should be > 0
-      }
-    }
-//   restCall(Method.POST, "/api/entry/exception", entryExceptionCreate _),        
-
-    "query entries" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+"query entryExceptionCreate" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
       new MicroserviceCalApplication(ctx) with LocalServiceLocator
     } { server =>
       val client = server.serviceClient.implement[MicroserviceCalService]
@@ -112,18 +101,7 @@ class HelloServiceSpec extends AsyncWordSpec with Matchers {
       }
     }
 
-    "query entries" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
-      new MicroserviceCalApplication(ctx) with LocalServiceLocator
-    } { server =>
-      val client = server.serviceClient.implement[MicroserviceCalService]
-      client.deleteEntryException.invoke().map { response =>
-        println(response)
-        response.length should be > 0
-      }
-    }
-//   restCall(Method.DELETE, "/api/entry/:entry_id/exception", deleteEntryException _),
-
-    "deleteEntryException" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+"query deleteEntryException" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
       new MicroserviceCalApplication(ctx) with LocalServiceLocator
     } { server =>
       val client = server.serviceClient.implement[MicroserviceCalService]
@@ -133,9 +111,7 @@ class HelloServiceSpec extends AsyncWordSpec with Matchers {
       }
     }
 
-//   restCall(Method.GET, "/api/asset/:assetId/availabilities", assetAvailability _),
-
-    "assetAvailability" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+"query assetAvailability" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
       new MicroserviceCalApplication(ctx) with LocalServiceLocator
     } { server =>
       val client = server.serviceClient.implement[MicroserviceCalService]
@@ -144,9 +120,9 @@ class HelloServiceSpec extends AsyncWordSpec with Matchers {
         response.length should be > 0
       }
     }
-//   restCall(Method.GET, "/api/asset/:assetId/availabilities_from/:from/:to", assetAvailabilityFromTo _)
 
-    "assetAvailabilityFromTo" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+
+"query assetAvailabilityFromTo" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
       new MicroserviceCalApplication(ctx) with LocalServiceLocator
     } { server =>
       val client = server.serviceClient.implement[MicroserviceCalService]
@@ -155,7 +131,7 @@ class HelloServiceSpec extends AsyncWordSpec with Matchers {
         response.length should be > 0
       }
     }
-
+    
   }
 }
 
