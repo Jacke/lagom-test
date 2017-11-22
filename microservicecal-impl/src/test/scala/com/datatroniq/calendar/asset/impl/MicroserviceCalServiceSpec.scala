@@ -35,21 +35,126 @@ class HelloServiceSpec extends AsyncWordSpec with Matchers {
       }
     }
 
-//   restCall(Method.GET, "/api/assets",    getAllAssets _),
-//   restCall(Method.GET, "/api/asset/:id/entries",    getEntries _),
-//   restCall(Method.POST, "/api/asset", createAsset _),
-//   restCall(Method.PUT, "/api/asset/:id", updateAsset _),
-//   restCall(Method.DELETE, "/api/asset/:id", deleteAsset _),
-//   restCall(Method.POST, "/api/asset/:id/entry", createAssetEntry _),
-//   restCall(Method.PUT, "/api/asset/entry/:id", updateAssetEntry _),
-//   restCall(Method.DELETE, "/api/asset/entry/:id", deleteAssetEntry _),
 
+    "updateAsset" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+      new MicroserviceCalApplication(ctx) with LocalServiceLocator
+    } { server =>
+      val client = server.serviceClient.implement[MicroserviceCalService]
+      client.updateAsset.invoke().map { response =>
+        println(response)
+        response.length should be > 0
+      }
+    }
+
+//   restCall(Method.PUT, "/api/asset/:id", updateAsset _),
+
+
+    "query entries" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+      new MicroserviceCalApplication(ctx) with LocalServiceLocator
+    } { server =>
+      val client = server.serviceClient.implement[MicroserviceCalService]
+      client.getEntries.invoke().map { response =>
+        println(response)
+        response.length should be > 0
+      }
+    }
+
+//   restCall(Method.POST, "/api/asset/:id/entry", createAssetEntry _),
+    "updateAssetEntry" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+      new MicroserviceCalApplication(ctx) with LocalServiceLocator
+    } { server =>
+      val client = server.serviceClient.implement[MicroserviceCalService]
+      client.updateAssetEntry.invoke().map { response =>
+        println(response)
+        response.length should be > 0
+      }
+    }
+    "deleteAssetEntry" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+      new MicroserviceCalApplication(ctx) with LocalServiceLocator
+    } { server =>
+      val client = server.serviceClient.implement[MicroserviceCalService]
+      client.deleteAssetEntry.invoke().map { response =>
+        println(response)
+        response.length should be > 0
+      }
+    }
+
+
+    "query entries" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+      new MicroserviceCalApplication(ctx) with LocalServiceLocator
+    } { server =>
+      val client = server.serviceClient.implement[MicroserviceCalService]
+      client.getEntries.invoke().map { response =>
+        println(response)
+        response.length should be > 0
+      }
+    }
 //   restCall(Method.GET, "/api/entry/:entry_id/exceptions", getEntryExceptionsByEntry _),
+
+    "query entries" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+      new MicroserviceCalApplication(ctx) with LocalServiceLocator
+    } { server =>
+      val client = server.serviceClient.implement[MicroserviceCalService]
+      client.getEntries.invoke().map { response =>
+        println(response)
+        response.length should be > 0
+      }
+    }
 //   restCall(Method.POST, "/api/entry/exception", entryExceptionCreate _),        
+
+    "query entries" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+      new MicroserviceCalApplication(ctx) with LocalServiceLocator
+    } { server =>
+      val client = server.serviceClient.implement[MicroserviceCalService]
+      client.entryExceptionCreate.invoke().map { response =>
+        println(response)
+        response.length should be > 0
+      }
+    }
+
+    "query entries" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+      new MicroserviceCalApplication(ctx) with LocalServiceLocator
+    } { server =>
+      val client = server.serviceClient.implement[MicroserviceCalService]
+      client.deleteEntryException.invoke().map { response =>
+        println(response)
+        response.length should be > 0
+      }
+    }
 //   restCall(Method.DELETE, "/api/entry/:entry_id/exception", deleteEntryException _),
 
+    "deleteEntryException" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+      new MicroserviceCalApplication(ctx) with LocalServiceLocator
+    } { server =>
+      val client = server.serviceClient.implement[MicroserviceCalService]
+      client.deleteEntryException.invoke().map { response =>
+        println(response)
+        response.length should be > 0
+      }
+    }
+
 //   restCall(Method.GET, "/api/asset/:assetId/availabilities", assetAvailability _),
+
+    "assetAvailability" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+      new MicroserviceCalApplication(ctx) with LocalServiceLocator
+    } { server =>
+      val client = server.serviceClient.implement[MicroserviceCalService]
+      client.assetAvailability.invoke().map { response =>
+        println(response)
+        response.length should be > 0
+      }
+    }
 //   restCall(Method.GET, "/api/asset/:assetId/availabilities_from/:from/:to", assetAvailabilityFromTo _)
+
+    "assetAvailabilityFromTo" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+      new MicroserviceCalApplication(ctx) with LocalServiceLocator
+    } { server =>
+      val client = server.serviceClient.implement[MicroserviceCalService]
+      client.assetAvailabilityFromTo.invoke().map { response =>
+        println(response)
+        response.length should be > 0
+      }
+    }
 
   }
 }
