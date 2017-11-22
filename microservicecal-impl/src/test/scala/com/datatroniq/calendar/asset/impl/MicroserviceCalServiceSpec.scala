@@ -12,6 +12,19 @@ import org.scalatest.{AsyncWordSpec, Matchers}
 class HelloServiceSpec extends AsyncWordSpec with Matchers {
 
   "MicroserviceCalService" should {
+
+    "create asset" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
+      new MicroserviceCalApplication(ctx) with LocalServiceLocator
+    } { server =>
+      val client = server.serviceClient.implement[MicroserviceCalService]
+      val asset = com.datatroniq.calendar.asset.api.Asset(None, "name")
+
+      client.createAsset().invoke(asset).map { response =>
+        println(response)
+        response.id.isDefined should be(true)
+      }
+    }
+
     "query assets" in ServiceTest.withServer(ServiceTest.defaultSetup.withCassandra(true)) { ctx =>
       new MicroserviceCalApplication(ctx) with LocalServiceLocator
     } { server =>
@@ -22,9 +35,6 @@ class HelloServiceSpec extends AsyncWordSpec with Matchers {
       }
     }
 
-
-
-//   restCall(Method.GET, "/api/asset/:id", getAsset _),
 //   restCall(Method.GET, "/api/assets",    getAllAssets _),
 //   restCall(Method.GET, "/api/asset/:id/entries",    getEntries _),
 //   restCall(Method.POST, "/api/asset", createAsset _),
