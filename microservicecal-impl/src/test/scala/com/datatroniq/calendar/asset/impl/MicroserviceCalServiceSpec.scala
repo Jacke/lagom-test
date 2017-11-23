@@ -10,6 +10,8 @@ import com.lightbend.lagom.scaladsl.testkit.ServiceTest
 import org.scalatest.{AsyncWordSpec, Matchers}
 
 class HelloServiceSpec extends AsyncWordSpec with Matchers {
+  var asset_id = 0
+  var entry_id = 0
 
   "MicroserviceCalService" should {
 
@@ -40,7 +42,7 @@ class HelloServiceSpec extends AsyncWordSpec with Matchers {
       new MicroserviceCalApplication(ctx) with LocalServiceLocator
     } { server =>
       val client = server.serviceClient.implement[MicroserviceCalService]
-      client.getEntries.invoke().map { response =>
+      client.getEntries().invoke().map { response =>
         println(response)
         response.length should be > 0
       }

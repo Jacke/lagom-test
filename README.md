@@ -30,6 +30,52 @@ sbt runAll
 Then you should have access to all endpoints of this microservice
 http://localhost:9000/api/*
 
+## How to use
+
+Create asset
+POST /api/asset
+
+Create entries(maybe even reccurent, but now rec works only for one week (mon-sun) pattern)
+```
+POST /api/asset/:id/entry
+
+curl -X POST \
+  http://localhost:9000/api/asset/1/entry \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: 4fd2f2d5-a8f2-646c-4406-aaf6c485e653' \
+  -d '{"asset_id": 1, 
+"name": "String", 
+"startDateUtc": "2017-11-20T09:25:43.511Z", 
+"endDateUtc": "2017-11-20T18:25:43.511Z", 
+"duration": 0,
+"isAllDay":false,
+"isRecuring":false,
+"recurrencePattern": ""
+}'
+```
+
+
+Create entry exceptions
+```
+POST /api/entry/exception
+curl -X POST \
+  http://localhost:9000/api/entry/exception \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: 02374723-6cb3-4a29-6e09-c62540328795' \
+  -d '{"entry_id": 2, "startDateUtc": "2017-11-22T12:26:43.511+03:00", "endDateUtc": "2017-11-20T13:25:43.511+03:00"}
+'
+```
+
+
+
+Get availabilities
+```
+GET /api/asset/:id/availabilities
+```
+
+
 ## Tests
 
 
@@ -51,6 +97,7 @@ GET /api/asset/:assetId/availabilities_from/:from/:to
  
 Return list of availabilities from to datetime(format: 11/18/2017 08:10:00)
 ```
+
 
 
 
